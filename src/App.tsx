@@ -1,3 +1,4 @@
+import { ArrowLeftRight, RotateCcw } from 'lucide-react';
 import { useScoreStore, type TeamId } from './store/useScoreStore';
 
 export default function App() {
@@ -24,22 +25,22 @@ export default function App() {
     <div className="flex w-screen h-screen relative overflow-hidden">
       {/* Left Side */}
       <div
-        className="w-1/2 h-full flex flex-col items-center pt-8"
+        className="w-1/2 h-full flex flex-col items-center justify-center cursor-pointer select-none"
         style={{ backgroundColor: leftTeam.color }}
         onClick={() => handleIncrement(leftTeamId)}
       >
-        <h2 className="text-white text-4xl font-bold uppercase tracking-wider">
+        <h2 className="text-white text-6xl md:text-8xl font-black uppercase tracking-wider">
           {leftTeam.name}
         </h2>
       </div>
 
       {/* Right Side */}
       <div
-        className="w-1/2 h-full flex flex-col items-center pt-8"
+        className="w-1/2 h-full flex flex-col items-center justify-center cursor-pointer select-none"
         style={{ backgroundColor: rightTeam.color }}
         onClick={() => handleIncrement(rightTeamId)}
       >
-        <h2 className="text-white text-4xl font-bold uppercase tracking-wider">
+        <h2 className="text-white text-6xl md:text-8xl font-black uppercase tracking-wider">
           {rightTeam.name}
         </h2>
       </div>
@@ -55,10 +56,22 @@ export default function App() {
         </span>
       </div>
 
-      {/* Debug Data (Temporary) */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/80 p-2 rounded text-xs opacity-50 z-20">
-        <button className="mr-2 underline" onClick={handleSwap}>Swap</button>
-        <button className="underline" onClick={handleReset}>Reset</button>
+      {/* Bottom Actions */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-4 bg-white/20 backdrop-blur-md p-2 rounded-full shadow-lg border border-white/30 z-20">
+        <button
+          onClick={handleSwap}
+          className="p-4 bg-white/20 hover:bg-white/40 active:bg-white/50 text-white rounded-full transition-colors cursor-pointer"
+          aria-label="Swap Sides"
+        >
+          <ArrowLeftRight className="w-8 h-8" />
+        </button>
+        <button
+          onClick={handleReset}
+          className="p-4 bg-white/20 hover:bg-white/40 active:bg-white/50 text-white rounded-full transition-colors cursor-pointer"
+          aria-label="Reset Game"
+        >
+          <RotateCcw className="w-8 h-8" />
+        </button>
       </div>
     </div>
   );
