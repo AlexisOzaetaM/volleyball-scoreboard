@@ -1,10 +1,23 @@
 import { ArrowLeftRight, Plus, RotateCcw } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import { useDrag } from '@use-gesture/react';
 import { useScoreStore } from './store/useScoreStore';
 import { Card } from '@/components/ui/card';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 export default function App() {
   const store = useScoreStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const prevTotalScore = useRef(0);
 
   const bindLeft = useDrag(({ swipe: [, swipeY], tap }) => {
     if (tap) {
@@ -38,6 +51,33 @@ export default function App() {
   const rightTeamId = store.layout.right;
   const leftTeam = store.teams[leftTeamId];
   const rightTeam = store.teams[rightTeamId];
+
+  const totalScore = leftTeam.score + rightTeam.score;
+
+  useEffect(() => {
+    if (totalScore > prevTotalScore.current) {
+      if (totalScore === 21) {
+        // Use timeout to avoid synchronous state update in effect during render phase
+        setTimeout(() => {
+          setModalMessage('¡Tiempo Técnico (TTO) y Cambio de Cancha!');
+          setIsModalOpen(true);
+        }, 0);
+      } else if (totalScore % 7 === 0 && totalScore > 0) {
+        setTimeout(() => {
+          setModalMessage('¡Cambio de Cancha!');
+          setIsModalOpen(true);
+        }, 0);
+      }
+    }
+    prevTotalScore.current = totalScore;
+  }, [totalScore]);
+
+  const handleModalOpenChange = (open: boolean) => {
+    if (!open) {
+      setIsModalOpen(false);
+      store.swapSides();
+    }
+  };
 
   return (
     <div className='bg-white'>
@@ -114,6 +154,20 @@ export default function App() {
           </button>
         </Card>
       </div>
+
+      <AlertDialog open={isModalOpen} onOpenChange={handleModalOpenChange}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-2xl text-center">Interrupción de Juego</AlertDialogTitle>
+            <AlertDialogDescription className="text-xl text-center font-semibold text-black mt-4">
+              {modalMessage}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="sm:justify-center mt-6">
+            <AlertDialogAction className="w-full sm:w-auto text-lg px-8">OK</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
