@@ -22,8 +22,16 @@ export default function App() {
   const rightTeam = store.teams[rightTeamId];
 
   return (
-    <div className="flex w-screen h-screen relative overflow-hidden">
-      {/* Left Side */}
+    <>
+      {/* Portrait Warning Overlay */}
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-zinc-900 text-white p-6 text-center landscape:hidden">
+        <RotateCcw className="w-16 h-16 mb-4 animate-spin-slow" />
+        <h2 className="text-2xl font-bold mb-2">Por favor, gira tu dispositivo</h2>
+        <p className="text-zinc-400">El marcador está diseñado para verse en modo horizontal.</p>
+      </div>
+
+      <div className="flex w-screen h-[100dvh] fixed inset-0 overflow-hidden portrait:hidden">
+        {/* Left Side */}
       <div
         className="w-1/2 h-full flex flex-col items-center justify-center cursor-pointer select-none"
         style={{ backgroundColor: leftTeam.color }}
@@ -73,6 +81,7 @@ export default function App() {
           <RotateCcw className="w-8 h-8" />
         </button>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
