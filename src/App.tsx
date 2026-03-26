@@ -40,69 +40,78 @@ export default function App() {
   const rightTeam = store.teams[rightTeamId];
 
   return (
-    <div className="flex w-screen h-screen relative overflow-hidden">
-      {/* Left Side */}
-      <div
-        {...bindLeft()}
-        className="w-1/2 h-full flex flex-col items-center justify-center cursor-pointer select-none touch-none"
-        style={{ backgroundColor: leftTeam.color }}
-      >
-        <h2 className="text-white/80 text-4xl md:text-5xl font-bold uppercase tracking-wider">
-          {leftTeam.name}
-        </h2>
-        <span className="text-white text-[15rem] md:text-[14rem] font-black leading-none">
-          {leftTeam.score}
-        </span>
+    <>
+      {/* Portrait Warning Overlay */}
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-zinc-900 text-white p-6 text-center landscape:hidden">
+        <RotateCcw className="w-16 h-16 mb-4 animate-spin-slow" />
+        <h2 className="text-2xl font-bold mb-2">Por favor, gira tu dispositivo</h2>
+        <p className="text-zinc-400">El marcador está diseñado para verse en modo horizontal.</p>
       </div>
 
-      {/* Right Side */}
-      <div
-        {...bindRight()}
-        className="w-1/2 h-full flex flex-col items-center justify-center cursor-pointer select-none touch-none"
-        style={{ backgroundColor: rightTeam.color }}
-      >
-        <h2 className="text-white/80 text-4xl md:text-5xl font-bold uppercase tracking-wider">
-          {rightTeam.name}
-        </h2>
-        <span className="text-white text-[15rem] md:text-[14rem] font-black leading-none">
-          {rightTeam.score}
-        </span>
-      </div>
+      <div className="flex w-screen h-[100dvh] fixed inset-0 overflow-hidden portrait:hidden">
+        {/* Left Side */}
+        <div
+          {...bindLeft()}
+          className="w-1/2 h-full flex flex-col items-center justify-center cursor-pointer select-none touch-none"
+          style={{ backgroundColor: leftTeam.color }}
+        >
+          <h2 className="text-white/80 text-4xl md:text-5xl font-bold uppercase tracking-wider">
+            {leftTeam.name}
+          </h2>
+          <span className="text-white text-[15rem] md:text-[14rem] font-black leading-none">
+            {leftTeam.score}
+          </span>
+        </div>
 
-      {/* Central Scoreboard */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-white/20 backdrop-blur-md px-6 py-2 rounded-full shadow-lg border border-white/30 z-10">
-        <span
-          className="text-white font-black text-4xl md:text-4xl cursor-pointer hover:scale-110 transition-transform select-none"
-          onClick={() => store.addSet(leftTeamId)}
+        {/* Right Side */}
+        <div
+          {...bindRight()}
+          className="w-1/2 h-full flex flex-col items-center justify-center cursor-pointer select-none touch-none"
+          style={{ backgroundColor: rightTeam.color }}
         >
-          {leftTeam.sets}
-        </span>
-        <span className="text-white/80 font-bold text-2xl md:text-3xl select-none">-</span>
-        <span
-          className="text-white font-black text-4xl md:text-4xl cursor-pointer hover:scale-110 transition-transform select-none"
-          onClick={() => store.addSet(rightTeamId)}
-        >
-          {rightTeam.sets}
-        </span>
-      </div>
+          <h2 className="text-white/80 text-4xl md:text-5xl font-bold uppercase tracking-wider">
+            {rightTeam.name}
+          </h2>
+          <span className="text-white text-[15rem] md:text-[14rem] font-black leading-none">
+            {rightTeam.score}
+          </span>
+        </div>
 
-      {/* Bottom Actions */}
-      <Card className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-row items-center gap-4 bg-white/20 backdrop-blur-md p-2 rounded-full shadow-lg border-white/30 z-20">
-        <button
-          onClick={handleReset}
-          className="p-2 bg-white/20 hover:bg-white/40 active:bg-white/50 text-white rounded-full transition-colors cursor-pointer"
-          aria-label="Reset Game"
-        >
-          <Plus className="w-6 h-6" />
-        </button>
-        <button
-          onClick={handleSwap}
-          className="p-2 bg-white/20 hover:bg-white/40 active:bg-white/50 text-white rounded-full transition-colors cursor-pointer"
-          aria-label="Swap Sides"
-        >
-          <ArrowLeftRight className="w-6 h-6" />
-        </button>
-      </Card>
-    </div>
+        {/* Central Scoreboard */}
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-white/20 backdrop-blur-md px-6 py-2 rounded-full shadow-lg border border-white/30 z-10">
+          <span
+            className="text-white font-black text-4xl md:text-4xl cursor-pointer hover:scale-110 transition-transform select-none"
+            onClick={() => store.addSet(leftTeamId)}
+          >
+            {leftTeam.sets}
+          </span>
+          <span className="text-white/80 font-bold text-2xl md:text-3xl select-none">-</span>
+          <span
+            className="text-white font-black text-4xl md:text-4xl cursor-pointer hover:scale-110 transition-transform select-none"
+            onClick={() => store.addSet(rightTeamId)}
+          >
+            {rightTeam.sets}
+          </span>
+        </div>
+
+        {/* Bottom Actions */}
+        <Card className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-row items-center gap-4 bg-white/20 backdrop-blur-md p-2 rounded-full shadow-lg border-white/30 z-20">
+          <button
+            onClick={handleReset}
+            className="p-2 bg-white/20 hover:bg-white/40 active:bg-white/50 text-white rounded-full transition-colors cursor-pointer"
+            aria-label="Reset Game"
+          >
+            <Plus className="w-6 h-6" />
+          </button>
+          <button
+            onClick={handleSwap}
+            className="p-2 bg-white/20 hover:bg-white/40 active:bg-white/50 text-white rounded-full transition-colors cursor-pointer"
+            aria-label="Swap Sides"
+          >
+            <ArrowLeftRight className="w-6 h-6" />
+          </button>
+        </Card>
+      </div>
+    </>
   );
 }
