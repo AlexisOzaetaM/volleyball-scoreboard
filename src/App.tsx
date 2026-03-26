@@ -15,20 +15,51 @@ export default function App() {
     store.resetGame();
   };
 
-  return (
-    <div style={{ padding: '20px' }}>
-      <h1>Volleyball Scoreboard</h1>
+  const leftTeamId = store.layout.left;
+  const rightTeamId = store.layout.right;
+  const leftTeam = store.teams[leftTeamId];
+  const rightTeam = store.teams[rightTeamId];
 
-      <div style={{ marginBottom: '20px', display: 'flex', gap: '10px' }}>
-        <button onClick={() => handleIncrement('teamA')}>+1 Team A</button>
-        <button onClick={() => handleIncrement('teamB')}>+1 Team B</button>
-        <button onClick={handleSwap}>Swap Sides</button>
-        <button onClick={handleReset}>Reset</button>
+  return (
+    <div className="flex w-screen h-screen relative overflow-hidden">
+      {/* Left Side */}
+      <div
+        className="w-1/2 h-full flex flex-col items-center pt-8"
+        style={{ backgroundColor: leftTeam.color }}
+        onClick={() => handleIncrement(leftTeamId)}
+      >
+        <h2 className="text-white text-4xl font-bold uppercase tracking-wider">
+          {leftTeam.name}
+        </h2>
       </div>
 
-      <pre style={{ background: '#f4f4f4', padding: '15px', borderRadius: '5px' }}>
-        {JSON.stringify({ teams: store.teams, layout: store.layout }, null, 2)}
-      </pre>
+      {/* Right Side */}
+      <div
+        className="w-1/2 h-full flex flex-col items-center pt-8"
+        style={{ backgroundColor: rightTeam.color }}
+        onClick={() => handleIncrement(rightTeamId)}
+      >
+        <h2 className="text-white text-4xl font-bold uppercase tracking-wider">
+          {rightTeam.name}
+        </h2>
+      </div>
+
+      {/* Central Scoreboard */}
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-white/20 backdrop-blur-md px-6 py-3 rounded-full shadow-lg border border-white/30 z-10 pointer-events-none">
+        <span className="text-white font-bold text-2xl">
+          {leftTeam.sets}
+        </span>
+        <span className="text-white/80 font-bold text-xl">-</span>
+        <span className="text-white font-bold text-2xl">
+          {rightTeam.sets}
+        </span>
+      </div>
+
+      {/* Debug Data (Temporary) */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/80 p-2 rounded text-xs opacity-50 z-20">
+        <button className="mr-2 underline" onClick={handleSwap}>Swap</button>
+        <button className="underline" onClick={handleReset}>Reset</button>
+      </div>
     </div>
   );
 }
