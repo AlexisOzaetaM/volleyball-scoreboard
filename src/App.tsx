@@ -52,7 +52,7 @@ export default function App() {
         {/* Left Side */}
         <div
           {...bindLeft()}
-          className="w-1/2 h-full flex flex-col items-center justify-center cursor-pointer select-none touch-none"
+          className="w-1/2 h-full flex flex-col items-center justify-center cursor-pointer select-none touch-none pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)]"
           style={{ backgroundColor: leftTeam.color }}
         >
           <h2 className="text-white text-4xl md:text-5xl font-bold uppercase tracking-wider">
@@ -66,7 +66,7 @@ export default function App() {
         {/* Right Side */}
         <div
           {...bindRight()}
-          className="w-1/2 h-full flex flex-col items-center justify-center cursor-pointer select-none touch-none"
+          className="w-1/2 h-full flex flex-col items-center justify-center cursor-pointer select-none touch-none pb-[env(safe-area-inset-bottom)] pr-[env(safe-area-inset-right)]"
           style={{ backgroundColor: rightTeam.color }}
         >
           <h2 className="text-white text-4xl md:text-5xl font-bold uppercase tracking-wider">
@@ -78,7 +78,7 @@ export default function App() {
         </div>
 
         {/* Central Scoreboard */}
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-white backdrop-blur-md px-6 py-2 rounded-full shadow-lg border border-white/30 z-10">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-white backdrop-blur-md px-6 py-2 rounded-full shadow-lg border border-white/30 z-10 mt-[env(safe-area-inset-top)]">
           <span
             className="font-black text-4xl md:text-4xl cursor-pointer hover:scale-110 transition-transform select-none"
             onClick={() => store.addSet(leftTeamId)}
@@ -97,7 +97,7 @@ export default function App() {
         </div>
 
         {/* Bottom Actions */}
-        <Card className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-row items-center gap-4 bg-white backdrop-blur-md p-2 rounded-full shadow-lg border-white/30 z-20">
+        <Card className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-row items-center gap-4 bg-white backdrop-blur-md p-2 rounded-full shadow-lg border-white/30 z-20 mb-[env(safe-area-inset-bottom)]">
           <button
             onClick={handleReset}
             className="p-2 bg-white hover:bg-white active:bg-white text-white rounded-full transition-colors cursor-pointer"
