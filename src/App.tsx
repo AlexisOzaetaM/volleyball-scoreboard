@@ -29,7 +29,7 @@ export default function App() {
         style={{ backgroundColor: leftTeam.color }}
         onClick={() => handleIncrement(leftTeamId)}
       >
-        <h2 className="text-white text-6xl md:text-8xl font-black uppercase tracking-wider">
+        <h2 className="text-white text-5xl md:text-7xl font-bold uppercase tracking-wider">
           {leftTeam.name}
         </h2>
       </div>
@@ -40,7 +40,7 @@ export default function App() {
         style={{ backgroundColor: rightTeam.color }}
         onClick={() => handleIncrement(rightTeamId)}
       >
-        <h2 className="text-white text-6xl md:text-8xl font-black uppercase tracking-wider">
+        <h2 className="text-white text-5xl md:text-7xl font-bold uppercase tracking-wider">
           {rightTeam.name}
         </h2>
       </div>
