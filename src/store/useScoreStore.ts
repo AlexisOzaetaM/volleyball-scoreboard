@@ -107,7 +107,23 @@ export const useScoreStore = create<ScoreState>((set) => ({
       };
     }),
 
-  resetGame: () => set({ ...initialState }),
+  resetGame: () =>
+    set((state) => ({
+      teams: {
+        teamA: {
+          ...state.teams.teamA,
+          score: 0,
+          sets: 0,
+          hasServe: true,
+        },
+        teamB: {
+          ...state.teams.teamB,
+          score: 0,
+          sets: 0,
+          hasServe: false,
+        },
+      },
+    })),
 
   swapSides: () =>
     set((state) => ({
