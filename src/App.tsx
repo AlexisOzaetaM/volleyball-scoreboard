@@ -1,12 +1,30 @@
 import { ArrowLeftRight, RotateCcw } from 'lucide-react';
-import { useScoreStore, type TeamId } from './store/useScoreStore';
+import { useDrag } from '@use-gesture/react';
+import { useScoreStore } from './store/useScoreStore';
+import { Card } from '@/components/ui/card';
 
 export default function App() {
   const store = useScoreStore();
 
-  const handleIncrement = (teamId: TeamId) => {
-    store.incrementScore(teamId);
-  };
+  const bindLeft = useDrag(({ swipe: [, swipeY], tap }) => {
+    if (tap) {
+      store.incrementScore(store.layout.left);
+    } else if (swipeY === -1) {
+      store.incrementScore(store.layout.left); // Swipe up
+    } else if (swipeY === 1) {
+      store.decrementScore(store.layout.left); // Swipe down
+    }
+  }, { filterTaps: true });
+
+  const bindRight = useDrag(({ swipe: [, swipeY], tap }) => {
+    if (tap) {
+      store.incrementScore(store.layout.right);
+    } else if (swipeY === -1) {
+      store.incrementScore(store.layout.right); // Swipe up
+    } else if (swipeY === 1) {
+      store.decrementScore(store.layout.right); // Swipe down
+    }
+  }, { filterTaps: true });
 
   const handleSwap = () => {
     store.swapSides();
@@ -25,39 +43,51 @@ export default function App() {
     <div className="flex w-screen h-screen relative overflow-hidden">
       {/* Left Side */}
       <div
-        className="w-1/2 h-full flex flex-col items-center justify-center cursor-pointer select-none"
+        {...bindLeft()}
+        className="w-1/2 h-full flex flex-col items-center justify-center cursor-pointer select-none touch-none relative"
         style={{ backgroundColor: leftTeam.color }}
-        onClick={() => handleIncrement(leftTeamId)}
       >
-        <h2 className="text-white text-5xl md:text-7xl font-bold uppercase tracking-wider">
+        <h2 className="text-white/80 text-4xl md:text-6xl font-bold uppercase tracking-wider absolute top-32">
           {leftTeam.name}
         </h2>
+        <span className="text-white text-[15rem] md:text-[20rem] font-black leading-none drop-shadow-2xl">
+          {leftTeam.score}
+        </span>
       </div>
 
       {/* Right Side */}
       <div
-        className="w-1/2 h-full flex flex-col items-center justify-center cursor-pointer select-none"
+        {...bindRight()}
+        className="w-1/2 h-full flex flex-col items-center justify-center cursor-pointer select-none touch-none relative"
         style={{ backgroundColor: rightTeam.color }}
-        onClick={() => handleIncrement(rightTeamId)}
       >
-        <h2 className="text-white text-5xl md:text-7xl font-bold uppercase tracking-wider">
+        <h2 className="text-white/80 text-4xl md:text-6xl font-bold uppercase tracking-wider absolute top-32">
           {rightTeam.name}
         </h2>
+        <span className="text-white text-[15rem] md:text-[20rem] font-black leading-none drop-shadow-2xl">
+          {rightTeam.score}
+        </span>
       </div>
 
       {/* Central Scoreboard */}
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-6 bg-white/20 backdrop-blur-md px-8 py-4 rounded-full shadow-lg border border-white/30 z-10 pointer-events-none">
-        <span className="text-white font-black text-4xl md:text-5xl">
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-6 bg-white/20 backdrop-blur-md px-8 py-4 rounded-full shadow-lg border border-white/30 z-10">
+        <span
+          className="text-white font-black text-4xl md:text-5xl cursor-pointer hover:scale-110 transition-transform select-none"
+          onClick={() => store.addSet(leftTeamId)}
+        >
           {leftTeam.sets}
         </span>
-        <span className="text-white/80 font-bold text-2xl md:text-3xl">-</span>
-        <span className="text-white font-black text-4xl md:text-5xl">
+        <span className="text-white/80 font-bold text-2xl md:text-3xl select-none">-</span>
+        <span
+          className="text-white font-black text-4xl md:text-5xl cursor-pointer hover:scale-110 transition-transform select-none"
+          onClick={() => store.addSet(rightTeamId)}
+        >
           {rightTeam.sets}
         </span>
       </div>
 
       {/* Bottom Actions */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-4 bg-white/20 backdrop-blur-md p-2 rounded-full shadow-lg border border-white/30 z-20">
+      <Card className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-4 bg-white/20 backdrop-blur-md p-2 rounded-full shadow-lg border-white/30 z-20">
         <button
           onClick={handleSwap}
           className="p-4 bg-white/20 hover:bg-white/40 active:bg-white/50 text-white rounded-full transition-colors cursor-pointer"
@@ -72,7 +102,7 @@ export default function App() {
         >
           <RotateCcw className="w-8 h-8" />
         </button>
-      </div>
+      </Card>
     </div>
   );
 }
