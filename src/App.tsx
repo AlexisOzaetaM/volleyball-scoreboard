@@ -46,12 +46,12 @@ export default function App() {
       </div>
 
       {/* Central Scoreboard */}
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-white/20 backdrop-blur-md px-6 py-3 rounded-full shadow-lg border border-white/30 z-10 pointer-events-none">
-        <span className="text-white font-bold text-2xl">
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-6 bg-white/20 backdrop-blur-md px-8 py-4 rounded-full shadow-lg border border-white/30 z-10 pointer-events-none">
+        <span className="text-white font-black text-4xl md:text-5xl">
           {leftTeam.sets}
         </span>
-        <span className="text-white/80 font-bold text-xl">-</span>
-        <span className="text-white font-bold text-2xl">
+        <span className="text-white/80 font-bold text-2xl md:text-3xl">-</span>
+        <span className="text-white font-black text-4xl md:text-5xl">
           {rightTeam.sets}
         </span>
       </div>
